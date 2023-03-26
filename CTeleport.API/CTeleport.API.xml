@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>CTeleport.API</name>
+    </assembly>
+    <members>
+        <member name="M:CTeleport.API.Controllers.v1.DistanceController.GetDistanceInMiles(System.String,System.String)">
+            <summary>
+            Gets two iata codes and calculates distance between airports in miles
+            </summary>
+            <param name="firstIataCode"></param>
+            <param name="secondIataCode"></param>
+            <returns>distance between two airports in miles</returns>
+            <remarks>
+            Sample request:
+                GET /distance/miles?firstIataCode=IST&amp;secondIataCode=AMS
+            </remarks>
+        </member>
+        <member name="M:CTeleport.API.Controllers.v1.DistanceController.GetDistanceInKilometers(System.String,System.String)">
+            <summary>
+            Gets two iata codes and calculates distance between airports in kilometers
+            </summary>
+            <param name="firstIataCode"></param>
+            <param name="secondIataCode"></param>
+            <returns>distance between two airports in kilometers</returns>
+            <remarks>
+            Sample request:
+                GET /distance/kilometers?firstIataCode=IST&amp;secondIataCode=AMS
+            </remarks>
+        </member>
+    </members>
+</doc>
