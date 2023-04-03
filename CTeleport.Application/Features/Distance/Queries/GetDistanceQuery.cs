@@ -4,6 +4,7 @@ using CTeleport.Application.Features.Distance.Rules;
 using CTeleport.Application.Features.Distance.Utils;
 using CTeleport.Application.Interfaces;
 using CTeleport.Application.Wrappers;
+using CTeleport.Domain.Common;
 using MediatR;
 
 namespace CTeleport.Application.Features.Distance.Queries
@@ -28,14 +29,12 @@ namespace CTeleport.Application.Features.Distance.Queries
             public async Task<DataResponse<DistanceResponse>> Handle(GetDistanceQuery request, CancellationToken cancellationToken)
             {
                 var firstAirportCoordinate = await this.airportService.GetCoordinate(request.FirstIataCode);
-                
-                coordinateRules.LatitudeShouldBeValid(request.FirstIataCode, firstAirportCoordinate.Latitude);
-                coordinateRules.LongitudeShouldBeValid(request.FirstIataCode, firstAirportCoordinate.Longitude);
+
+                ValidateCoordinates(request.FirstIataCode, firstAirportCoordinate);
 
                 var secondAirportCoordinate = await this.airportService.GetCoordinate(request.SecondIataCode);
-                
-                coordinateRules.LatitudeShouldBeValid(request.SecondIataCode, secondAirportCoordinate.Latitude);
-                coordinateRules.LongitudeShouldBeValid(request.SecondIataCode, secondAirportCoordinate.Longitude);
+
+                ValidateCoordinates(request.SecondIataCode, secondAirportCoordinate);
 
                 var distance = request.Unit switch
                 {
@@ -48,9 +47,15 @@ namespace CTeleport.Application.Features.Distance.Queries
                 {
                     Distance = distance,
                     Unit = request.Unit
-                };                
+                };
 
                 return DataResponse<DistanceResponse>.Success(responseModel);
+            }
+
+            private void ValidateCoordinates(string iataCode, Coordinate coordinate)
+            {
+                coordinateRules.LatitudeShouldBeValid(iataCode, coordinate.Latitude);
+                coordinateRules.LongitudeShouldBeValid(iataCode, coordinate.Longitude);
             }
         }
     }

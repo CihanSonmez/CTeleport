@@ -21,7 +21,6 @@ namespace CTeleport.Infrastructure.Services
 
         public async Task<Coordinate> GetCoordinate(string iataCode)
         {
-
             if (!airportCache.TryGetValue(iataCode, out Coordinate coordinate))
             {
                 await airportCacheLock.WaitAsync();
@@ -29,7 +28,7 @@ namespace CTeleport.Infrastructure.Services
                 {
                     if (!airportCache.TryGetValue(iataCode, out coordinate))
                     {
-                        var client = new RestClient(airportApiSettings.BaseUrl);
+                        using var client = new RestClient(airportApiSettings.BaseUrl);
 
                         var request = new RestRequest(string.Format(airportApiSettings.GetAirportPath, iataCode.ToUpperInvariant()));
 
